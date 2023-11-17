@@ -298,6 +298,11 @@ else:
         labels_train = labels[:id_train].type(torch.double)
         kernel_test = kernel[id_t:, :id_train]
 
+        # Assuming kernel_train, kernel_test, and labels_train are PyTorch tensors on a CUDA device
+        kernel_train = kernel_train.cpu().numpy()
+        labels_train = labels_train.cpu().numpy()
+        kernel_test = kernel_test.cpu().numpy()
+
         alpha = 1e-6*kernel_train.max()
         output = kernel_ridge_reg(kernel_train, kernel_test, labels_train, alpha=alpha)
         acc = accuracy(output, ground_truth)
